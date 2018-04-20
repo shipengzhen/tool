@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<servers>
+     <server>
+        <!-- <host>127.0.0.1</host> -->
+       	<host>10.10.10.189</host>
+        <port>6379</port>
+    </server>
+</servers>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="ShowViewDialog">
+		<item value="292" key="DIALOG_WIDTH"/>
+		<item value="1|Microsoft YaHei UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Microsoft YaHei UI" key="DIALOG_FONT_NAME"/>
+		<item value="org.springframework.ide.eclipse.boot.dash.views.BootDashView" key="ShowViewDialog.STORE_SELECTED_VIEW_ID"/>
+		<item value="479" key="DIALOG_HEIGHT"/>
+		<item value="366" key="DIALOG_X_ORIGIN"/>
+		<item value="65" key="DIALOG_Y_ORIGIN"/>
+		<list key="ShowViewDialog.STORE_EXPANDED_CATEGORIES_ID">
+			<item value="调试"/>
+			<item value="Ant"/>
+			<item value="API 工具"/>
+			<item value="AspectJ"/>
+			<item value="Git"/>
+			<item value="Gradle"/>
+			<item value="Gradle (STS)"/>
+			<item value="Java"/>
+			<item value="Java 浏览"/>
+			<item value="JavaScript"/>
+			<item value="JavaServer Faces"/>
+			<item value="JPA"/>
+			<item value="Maven"/>
+			<item value="Mylyn"/>
+			<item value="Oomph"/>
+			<item value="Spring"/>
+			<item value="Terminal"/>
+			<item value="Visualiser"/>
+			<item value="Web Services"/>
+			<item value="XML"/>
+		</list>
+	</section>
+</section>

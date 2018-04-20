@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xwtec.ecu.web.merchant.dao.IMerchantDao">
+
+	<!-- 根据merchantId获取merchant信息 -->
+	<select id="qryMerchantByMerchantId" parameterType="String" resultType="com.xwtec.ecu.web.merchant.bean.MerchantInfo">
+		SELECT T.MERCHANT_ID AS merchantId,
+		       T.MERCHANT_NAME AS merchantName,
+		       T.CITY_CODE AS cityCode,
+		       T.STATUS AS status,
+		       T.TYPE AS type,
+		       T.DETAIL_TYPE AS detailType,
+		       T.CREATE_TIME AS createTime,
+		       T.LOGO AS logo,
+		       T.MANAGER_TELNUM AS managerTelNum
+		  FROM T_MERCHANT_INFO T
+		 WHERE T.MERCHANT_ID = #{merchantId} AND T.STATUS = '0'
+	</select>
+
+	<!-- 计算已上线的商户门店数量 -->
+	<select id="countMerchantStoreByMerchantId" parameterType="String" resultType="String">
+		SELECT COUNT(*)
+		FROM T_STORE_INFO T
+		WHERE T.MERCHANT_ID = #{merchantId}
+		AND T.AUDITING_STATE = '10' AND T.STATUS = '0'
+	</select>
+	
+	<!-- 计算未上线的商户门店数量 -->
+	<select id="countMerchantAuditedStoreByMerchantId" parameterType="String" resultType="String">
+		SELECT COUNT(*)
+		FROM T_STORE_INFO T
+		WHERE T.MERCHANT_ID = #{merchantId}
+		AND T.AUDITING_STATE = '00' AND T.STATUS = '0'
+	</select>
+	
+	<!-- 计算门店的店长数量 -->
+	<select id="countMerchantShopOwnerByMerchantId" parameterType="String" resultType="String">
+		SELECT COUNT(*)
+		FROM T_OPERATOR_INFO T
+		LEFT JOIN T_STORE_INFO A ON T.STORE_ID = A.STORE_ID  
+		WHERE A.MERCHANT_ID = #{merchantId}
+		AND T.ROLE_ID = '0002' AND T.STATUS='0'
+	</select>
+	
+	<!-- 根据merchantId和开始结束时间获取店铺账单数据 -->
+	<select id="qryStoreBillsByStoreIdAndDate" parameterType="java.util.Map" resultType="com.xwtec.ecu.web.merchant.bean.StoreBillResult">
+		SELECT SUM(T.PRICE) AS amount,
+	       TO_CHAR(T.PAY_TIME, 'YYYYMMDD') AS payDate
+	    FROM T_PAYMENT_ORDER T
+	    LEFT JOIN T_STORE_INFO A ON A.STORE_ID = T.STORE_ID
+	    WHERE T.PAY_TIME <![CDATA[>=]]> TO_DATE(#{startTime}, 'YYYYMMDDHH24MISS')
+	       <if test="endTime != null and endTime !=''">
+				AND T.PAY_TIME <![CDATA[<=]]> TO_DATE(#{endTime},'YYYYMMDDHH24MISS')
+			</if>
+	   		<if test="endTime == null or endTime == ''">
+	   			AND T.PAY_TIME <![CDATA[<=]]> SYSDATE
+	   		</if>
+	       AND T.STORE_ID = #{storeId}
+	       AND T.ORDER_STATUS = '20'
+	    GROUP BY TO_CHAR(T.PAY_TIME, 'YYYYMMDD') 
+	</select>
+	
+	<select id="qryStoreBillsYesterdayByMerchatId" parameterType="java.util.Map" resultType="com.xwtec.ecu.web.merchant.bean.StoreBillResult">
+		SELECT SUM(CASE WHEN T.PRICE IS NULL THEN '0' ELSE T.PRICE END) AS amount,
+	         A.STORE_NAME AS storeName
+	    FROM T_STORE_INFO A 
+	    LEFT JOIN T_PAYMENT_ORDER T ON A.STORE_ID = T.STORE_ID 
+	       AND T.PAY_TIME <![CDATA[>=]]> TO_DATE(#{startTime}, 'YYYYMMDDHH24MISS')
+	       AND T.PAY_TIME <![CDATA[<=]]> TO_DATE(#{endTime}, 'YYYYMMDDHH24MISS')
+	       AND T.ORDER_STATUS = '20'
+	    WHERE A.MERCHANT_ID = #{merchantId}
+	       AND A.AUDITING_STATE = '10'
+	       AND A.STATUS = '0'
+	    GROUP BY A.STORE_NAME 
+	</select>
+	
+	<select id="qryMerchantStoresIdAndNameByMerchantId" parameterType="String" resultType="com.xwtec.ecu.web.merchant.bean.CodeNameResult">
+		SELECT T.STORE_ID AS code,
+			T.STORE_NAME AS name
+		FROM T_STORE_INFO T
+		WHERE T.MERCHANT_ID = #{merchantId}
+		AND T.STATUS = '0'
+		AND T.AUDITING_STATE = '10'
+	</select>
+</mapper>

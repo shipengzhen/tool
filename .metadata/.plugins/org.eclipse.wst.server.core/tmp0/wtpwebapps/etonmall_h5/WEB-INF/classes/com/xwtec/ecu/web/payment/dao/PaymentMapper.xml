@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xwtec.ecu.web.payment.dao.PaymentMapper">
+
+	<!-- 查询系统时间 -->
+	<select id="getSysDate" resultType="java.lang.String">
+		select
+		to_char(sysdate,'yyyymmddhh24miss') from dual
+	</select>
+
+	<select id="getOrderIdSeq" resultType="java.lang.String">
+		select
+		ETONEPAY_SEQ.nextVal from dual
+	</select>
+
+	<!-- 通过退款码查询订单 -->
+	<select id="qryOrderByRefundQr" parameterType="java.lang.String"
+		resultType="com.xwtec.ecu.web.payment.pojo.Order">
+		select t.order_id as orderId,
+		t.trade_id as tradeId,
+		t.order_type as orderType,
+		t.io_type as ioType,
+		t.operator_id as
+		operatorId,
+		t.user_id as userId,
+		t.merchant_id as merChantId,
+		t.price as
+		price,
+		t.pos_id as posId,
+		t.create_Time as createTime,
+		t.pay_time as
+		payTime,
+		t.order_status as orderStatus,
+		t.refund_qr as refundQr,
+		t.refund_time as refundTime,
+		t.order_finish_time as orderFinishTime,
+		t.is_invalid as isInvalid,
+		t.Invalid_time as invalidTime,
+		t.pay_qr as
+		payQr,
+		t.pay_qr_is_invalid as payQrIsInvalid,
+		t.card_no as cardNo,
+		tt.MERCHANT_NAME as merchantName,
+		tt.logo as merchantLogo,
+		t.store_id as
+		storeId
+		from T_PAYMENT_ORDER t,T_MERCHANT_INFO tt
+		where
+		t.refund_qr=#{refundQr} and tt.merchant_id=t.merchant_id
+	</select>
+
+	<!-- 根据用户付款码查询订单 -->
+	<select id="qryOrderByUserQr" parameterType="java.lang.String"
+		resultType="com.xwtec.ecu.web.payment.pojo.Order">
+		select t.order_id as orderId,
+		t.trade_id as tradeId,
+		t.order_type as orderType,
+		t.io_type as ioType,
+		t.operator_id as
+		operatorId,
+		t.user_id as userId,
+		t.merchant_id as merChantId,
+		t.price as
+		price,
+		t.pos_id as posId,
+		t.create_Time as createTime,
+		t.pay_time as
+		payTime,
+		t.order_status as orderStatus,
+		t.refund_qr as refundQr,
+		t.refund_time as refundTime,
+		t.order_finish_time as orderFinishTime,
+		t.is_invalid as isInvalid,
+		t.Invalid_time as invalidTime,
+		t.pay_qr as
+		payQr,
+		t.pay_qr_is_invalid as payQrIsInvalid,
+		t.card_no as cardNo,
+		tt.MERCHANT_NAME as merchantName,
+		tt.logo as merchantLogo
+		from
+		T_PAYMENT_ORDER t,T_MERCHANT_INFO tt
+		where t.pay_qr=#{userQr} and
+		tt.merchant_id=t.merchant_id
+	</select>
+
+	<!-- 创建订单 -->
+	<insert id="insertOrder" parameterType="com.xwtec.ecu.web.payment.pojo.Order">
+		insert into
+		T_PAYMENT_ORDER
+		(ORDER_ID,ORDER_TYPE,IO_TYPE,OPERATOR_ID,USER_ID,MERCHANT_ID,PRICE,POS_ID,CREATE_TIME,ORDER_STATUS,IS_INVALID,PAY_QR,PAY_QR_IS_INVALID,CARD_NO,STORE_ID)
+		values(#{orderId},#{orderType},#{ioType},#{operatorId},#{userId},#{merChantId},#{price},#{posId},SYSDATE,'10','0',#{payQr},#{payQrIsInvalid},#{cardNo},#{storeId})
+	</insert>
+
+	<!-- 插入付款码生成记录 -->
+	<insert id="insertPayQr" parameterType="java.util.Map">
+		insert into
+		t_user_payQr_record(user_id,pay_qr,card_id,create_time)
+		values(#{userId},#{payQr},#{cardId},SYSDATE)
+	</insert>
+
+	<!-- 更新订单详情 -->
+	<update id="updateOrderDetail" parameterType="java.util.Map">
+		update
+		T_PAYMENT_ORDER set
+		trade_id=#{tradeNo},pay_Time=SYSDATE,order_status=#{orderStatus},refund_qr=#{qrSeq},order_finish_time=SYSDATE,settle_date=#{settleDate}
+		where order_Id=#{orderId}
+	</update>
+
+	<!-- 更新订单状态 -->
+	<update id="updateOrderStatus" parameterType="java.util.Map">
+		update
+		T_PAYMENT_ORDER set order_status=#{orderStatus} where
+		order_id=#{orderId}
+	</update>
+
+	<!-- 查询用户通过付款码 -->
+	<select id="qryUserByPayQr" parameterType="java.lang.String"
+		resultType="com.xwtec.ecu.web.payment.pojo.PayQrRecord">
+		select USER_ID as userId,card_id as cardId from
+		T_USER_PAYQR_RECORD t where t.PAY_QR=#{payQr}
+	</select>
+
+	<!-- 查询用户通过付款码 -->
+	<select id="qryCardByPayQr" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		select CARD_ID from T_USER_PAYQR_RECORD t where
+		t.PAY_QR=#{payQr}
+	</select>
+
+	<!-- 根据订单号查询订单 -->
+	<select id="qryOrderById" parameterType="java.lang.String"
+		resultType="com.xwtec.ecu.web.payment.pojo.Order">
+		select t.order_id as orderId,
+		t.trade_id as tradeId,
+		t.order_type as orderType,
+		t.io_type as ioType,
+		t.operator_id as
+		operatorId,
+		t.user_id as userId,
+		t.merchant_id as merChantId,
+		t.price as
+		price,
+		t.pos_id as posId,
+		t.create_Time as createTime,
+		t.pay_time as
+		payTime,
+		t.order_status as orderStatus,
+		t.refund_qr as refundQr,
+		t.refund_time as refundTime,
+		t.order_finish_time as orderFinishTime,
+		t.is_invalid as isInvalid,
+		t.Invalid_time as invalidTime,
+		t.pay_qr as
+		payQr,
+		t.pay_qr_is_invalid as payQrIsInvalid,
+		t.card_no as cardNo,
+		tt.MERCHANT_NAME as merchantName,
+		tt.logo as merchantLogo
+		from
+		T_PAYMENT_ORDER t,T_MERCHANT_INFO tt
+		where t.order_id=#{orderId} and
+		tt.merchant_id=t.merchant_id
+	</select>
+
+	<!-- 根据用户和订单号查询订单 -->
+	<select id="qryTransactionRecord" parameterType="java.util.Map"
+		resultType="com.xwtec.ecu.web.payment.pojo.Order">
+		select t.order_id as orderId,
+		t.trade_id as tradeId,
+		t.order_type as
+		orderType,
+		t.io_type as ioType,
+		t.operator_id as
+		operatorId,
+		t.user_id as
+		userId,
+		t.merchant_id as merChantId,
+		t.price as
+		price,
+		t.pos_id as posId,
+		to_char(t.create_Time,'yyyy-mm-dd hh24:mi:ss') as createTime,
+		to_char(t.pay_time,'yyyy-mm-dd hh24:mi:ss') as
+		payTime,
+		t.order_status
+		as orderStatus,
+		t.refund_qr as refundQr,
+		t.refund_time as refundTime,
+		t.order_finish_time as orderFinishTime,
+		t.is_invalid as isInvalid,
+		t.Invalid_time as invalidTime,
+		t.pay_qr as
+		payQr,
+		t.pay_qr_is_invalid as
+		payQrIsInvalid,
+		t.card_no as cardNo,
+		tt.MERCHANT_NAME as merchantName,
+		tt.logo as merchantLogo
+		from T_PAYMENT_ORDER t,T_MERCHANT_INFO tt
+		where
+		t.user_id=#{userId} and tt.merchant_id=t.merchant_id
+		<if test="orderId !=''and orderId != null ">
+			and t.order_id=#{orderId}
+		</if>
+		order by t.create_Time desc
+	</select>
+
+	<select id="qryTransactionRecordByCardId" parameterType="java.util.Map"
+		resultType="com.xwtec.ecu.web.payment.pojo.Order">
+		select t.order_id as orderId,
+		t.trade_id as tradeId,
+		t.order_type as
+		orderType,
+		t.io_type as ioType,
+		t.operator_id as
+		operatorId,
+		t.user_id as
+		userId,
+		t.merchant_id as merChantId,
+		t.price as
+		price,
+		t.pos_id as posId,
+		to_char(t.create_Time,'yyyy-mm-dd hh24:mi:ss') as createTime,
+		to_char(t.pay_time,'yyyy-mm-dd hh24:mi:ss') as
+		payTime,
+		t.order_status
+		as orderStatus,
+		t.refund_qr as refundQr,
+		t.refund_time as refundTime,
+		t.order_finish_time as orderFinishTime,
+		t.is_invalid as isInvalid,
+		t.Invalid_time as invalidTime,
+		t.pay_qr as
+		payQr,
+		t.pay_qr_is_invalid as
+		payQrIsInvalid,
+		t.card_no as cardNo,
+		tt.MERCHANT_NAME as merchantName,
+		tt.logo as merchantLogo
+		from T_PAYMENT_ORDER t,T_MERCHANT_INFO tt
+		where
+		t.user_id=#{userId} and tt.merchant_id=t.merchant_id
+		<if test="cardId !=''and cardId != null ">
+			and t.card_no=#{cardId}
+		</if>
+		order by t.create_Time desc
+	</select>
+
+	<update id="updateRefundPayStatus" parameterType="java.util.Map">
+		update T_PAYMENT_ORDER set ORDER_STATUS=#{refundPayStatus}
+		<if test="refundPayStatus =='40'">
+			,REFUND_TIME=SYSDATE
+		</if>
+		where order_Id=#{orderId}
+	</update>
+
+	<update id="updateRefundStatus" parameterType="java.util.Map">
+		update T_PAYMENT_REFUND set STATUS=#{refundStatus},finish_time=SYSDATE
+		<if test="refundStatus == '30'">
+			,RES_DEC=#{resDec}
+		</if>
+		<if test="refundStatus == '30'">
+			,settle_date=#{settleDate}
+		</if>
+		where order_Id=#{orderId}
+		<if test="refundStatus =='20'">
+			and status='10'
+		</if>
+	</update>
+
+	<insert id="createRefundOrder" parameterType="java.util.Map">
+		INSERT INTO
+		T_PAYMENT_REFUND T
+		(T.REFUND_ID,
+		T.ORDER_ID,
+		T.REFUND_PRICE,
+		T.STATUS,
+		T.CREATE_TIME,
+		T.REFUND_CODE,
+		T.OPERATOR_ID)
+		VALUES (
+		#{refundId},
+		#{orderId},
+		#{refundPrice},
+		'10',
+		sysdate,
+		#{refundCode},
+		#{operatorId}
+		)
+	</insert>
+</mapper>

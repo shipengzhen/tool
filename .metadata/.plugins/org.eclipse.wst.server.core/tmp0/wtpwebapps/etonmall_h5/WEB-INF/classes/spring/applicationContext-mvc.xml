@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<!-- 自动扫该包描组件，只注册被@Controller等注解标记的组件 -->
+	<context:component-scan base-package="com.xwtec">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+	</context:component-scan>
+	
+	<!-- 启用注解驱动 -->
+	<mvc:annotation-driven />
+	<!-- servlet在找不到的时候会去找静态的内容 -->
+	<mvc:default-servlet-handler />
+	
+	<!-- json转换 -->
+	<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+	    <property name="supportedMediaTypes">    
+	        <list>    
+	            <value>text/html;charset=UTF-8</value>
+	        </list>    
+	    </property>    
+	</bean>    
+	  
+	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	    <property name="messageConverters">
+	        <list>
+	            <ref bean="mappingJacksonHttpMessageConverter" /><!-- json转换器 -->    
+	        </list>
+	    </property>
+	</bean>
+	
+	<!-- 配置mvc拦截器  可配置多个 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/merchant/**" />
+			<mvc:exclude-mapping path="/position/**" />
+			<mvc:exclude-mapping path="/home/homePage.do" />
+			<mvc:exclude-mapping path="/user/toForgetPwd.do" />
+			<mvc:exclude-mapping path="/user/toLogin.do" />
+			<mvc:exclude-mapping path="/user/toForgetPwdNext.do" />
+			<mvc:exclude-mapping path="/user/forgetPassword.do"/>
+			<mvc:exclude-mapping path="/user/resetPassword.do"/>
+			<mvc:exclude-mapping path="/user/register.do"/>
+			<mvc:exclude-mapping path="/user/loginByPWD.do"/>
+			<mvc:exclude-mapping path="/user/sendVerificationCode.do"/>
+			<mvc:exclude-mapping path="/user/sendVerificationCodeForH5.do"/>
+			<mvc:exclude-mapping path="/user/loginBySMS.do"/>
+			<mvc:exclude-mapping path="/user/autoLogin.do"/>
+			<mvc:exclude-mapping path="/user/validateSmsCode.do"/>
+			<mvc:exclude-mapping path="/user/loginBySMS.do"/>
+			<mvc:exclude-mapping path="/user/obtainingKey.do"/>
+			<mvc:exclude-mapping path="/user/toSetPayPassword.do"/>
+			<mvc:exclude-mapping path="/user/etonRegister.do"/>
+			<mvc:exclude-mapping path="/headSculpture/**"/>
+			<mvc:exclude-mapping path="/payment/notify.do"/>
+			<mvc:exclude-mapping path="/payment/refundNotify.do"/>
+			<bean class="com.xwtec.ecu.common.interceptor.RequsetInterceptor"></bean>
+		</mvc:interceptor>
+	
+		<!-- <mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/home/homePage.do*" />
+			<mvc:exclude-mapping path="/merchant/**" />
+			<mvc:exclude-mapping path="/search/**" />
+			<mvc:exclude-mapping path="/cardManager/**" />
+			<mvc:exclude-mapping path="/user/toForgetPwd.do*" />
+			<mvc:exclude-mapping path="/user/**" />
+			<mvc:exclude-mapping path="/payment/*" />
+			<mvc:exclude-mapping path="/position/**" />
+			<mvc:exclude-mapping path="/payment/**" />
+			<bean class="com.xwtec.ecu.common.interceptor.LoginInterceptor"></bean>
+		</mvc:interceptor> -->
+
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/merchant/**" />
+			<mvc:exclude-mapping path="/position/**" />
+			<mvc:exclude-mapping path="/home/homePage.do" />
+			<mvc:exclude-mapping path="/home/queryUserInfo.do" />
+			<mvc:exclude-mapping path="/user/toForgetPwd.do" />
+			<mvc:exclude-mapping path="/user/toLogin.do" />
+			<mvc:exclude-mapping path="/user/toForgetPwdNext.do" />
+			<mvc:exclude-mapping path="/user/forgetPassword.do"/>
+			<mvc:exclude-mapping path="/user/resetPassword.do"/>
+			<mvc:exclude-mapping path="/user/register.do"/>
+			<mvc:exclude-mapping path="/user/loginByPWD.do"/>
+			<mvc:exclude-mapping path="/user/sendVerificationCode.do"/>
+			<mvc:exclude-mapping path="/user/sendVerificationCodeForH5.do"/>
+			<mvc:exclude-mapping path="/user/loginBySMS.do"/>
+			<mvc:exclude-mapping path="/user/autoLogin.do"/>
+			<mvc:exclude-mapping path="/user/validateSmsCode.do"/>
+			<mvc:exclude-mapping path="/user/loginBySMS.do"/>
+			<mvc:exclude-mapping path="/user/obtainingKey.do"/>
+			<mvc:exclude-mapping path="/user/toSetPayPassword.do"/>
+			<mvc:exclude-mapping path="/user/etonRegister.do"/>
+			<mvc:exclude-mapping path="/headSculpture/**"/>
+			<bean class="com.xwtec.ecu.common.interceptor.IsAllowInterceptor"></bean>
+		</mvc:interceptor>
+
+		<mvc:interceptor>
+			<!-- 需要被拦截的路径 -->
+			<mvc:mapping path="/merchant/**"/>	
+			<mvc:exclude-mapping path="/merchant/loginPage.do*" />
+			<mvc:exclude-mapping path="/merchant/login.do*" />
+			<mvc:exclude-mapping path="/merchant/sendValidateCode.do*" />
+			<mvc:exclude-mapping path="/merchant/detailTypes.do*" />
+			<mvc:exclude-mapping path="/merchant/findPage.do*"/>
+			<mvc:exclude-mapping path="/merchant/storeInfoPage.do*"/>
+			
+			<!-- 拦截处理的interceptors -->
+			<bean class="com.xwtec.ecu.common.interceptor.MerchantLoginInterceptor"></bean>
+		</mvc:interceptor>
+		
+	</mvc:interceptors>
+	
+</beans>

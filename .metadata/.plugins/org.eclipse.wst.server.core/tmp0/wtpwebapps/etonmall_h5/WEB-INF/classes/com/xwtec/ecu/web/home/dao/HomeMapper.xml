@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xwtec.ecu.web.home.dao.HomeMapper">
+
+	<!-- 查询首页功能列表 -->
+	<select id="qryHomeFunctions" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT T.FUNCTION_NAME functionName,
+		       T.IMAGE image,
+		       T.FUNCTION_URL functionUrl
+		  FROM T_FUNCTION_FLOOR_CONTENT T
+		 WHERE T.IS_SHOW = '0'
+		   AND T.FLOOR_TYPE = #{floorType}
+		 ORDER BY T.SORT ASC
+	</select>
+	
+	<!-- 查询首页商品列表 -->
+	<select id="qryHomeGoods" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT T.GOODS_ID goodsId,
+				 T.GOODS_NAME goodsName,
+		       T.GOODS_IMAGE goodsImage,
+		       T.ORIGINAL_PRICE originalPrice,
+		       T.PRICE price,
+		       T.GOODS_DESC goodsDesc
+		  FROM T_HOME_GOODS T
+		 WHERE T.IS_SHOW = '0'
+		   AND T.GOODS_TYPE = #{goodsType}
+		 ORDER BY T.SORT ASC
+	</select>
+	
+		<!-- 查询首页功能列表 -->
+	<select id="inserSuggestion" resultType="java.util.Map" parameterType="java.util.Map">
+		INSERT INTO T_SUGGESTION_RECORD (ID, TIME, TELNUM, SUGGESTION)
+		VALUES (SEQ_SUGGESTION_RECORD.NEXTVAL, SYSDATE, ${telnum}, ${suggestion})
+	</select>
+	
+</mapper>

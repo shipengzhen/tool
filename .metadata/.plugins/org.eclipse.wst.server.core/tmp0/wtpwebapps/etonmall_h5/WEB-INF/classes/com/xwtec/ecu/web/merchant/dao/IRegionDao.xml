@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xwtec.ecu.web.merchant.dao.IRegionDao">
+
+	<select id="qryRegionNameByRegoinId" parameterType="String" resultType="String">
+		SELECT NAME FROM SYS_AREA WHERE CODE = #{regionId}
+	</select>
+	
+	<select id="qrySameLevelRegionsByRegionCode" parameterType="String" resultType="com.xwtec.ecu.web.merchant.bean.CodeNameResult">
+		SELECT A.CODE AS code,
+			A.NAME AS name
+		FROM SYS_AREA A 
+		LEFT JOIN SYS_AREA B ON A.PARENT_ID = B.PARENT_ID 
+		WHERE B.CODE = #{regionId}	
+	</select>
+	
+	<select id="qryChildrenRegionsByRegionCode" parameterType="String" resultType="com.xwtec.ecu.web.merchant.bean.CodeNameResult">
+		SELECT A.CODE AS code,
+			A.NAME AS name
+		FROM SYS_AREA A 
+		LEFT JOIN SYS_AREA B ON A.PARENT_ID = B.ID 
+		WHERE B.CODE = #{regionId}	
+	</select>
+</mapper>

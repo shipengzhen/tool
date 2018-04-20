@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xwtec.ecu.web.YTTCard.dao.ActCardMapper">
+
+	<select id="qrySalingCard" parameterType="String" resultType="com.xwtec.ecu.web.YTTCard.pojo.YTTCard">
+		select t.card_type as cardType,
+		t.card_name as cardName,
+		t.price as price,
+		t.act_card_type as actCardType,
+		t.origin_price as originPrice,
+		t.is_limit as isLimit,
+		t.total as total,
+		t.stock as stock,
+		t.card_image as cardImage,
+		t.card_rule as cardRule,
+		t.appli_merchant as appliMerchant,
+		t.limit as limit
+		from T_ACT_CARD_INFO t
+		where t.is_used='0' and t.act_card_type=#{actCardType}
+	</select>
+	
+	<!-- 查询用户油团团卡购买记录 -->
+	<select id="qryYttBuyRecord" parameterType="Map" resultType="com.xwtec.ecu.web.YTTCard.pojo.YTTCardOrder">
+		select t.order_id as orderId,
+		t.user_id as userId,
+		to_char(t.create_Time,'yyyyMMdd hh24miss') as createTime,
+		t.order_balance as orderBalance,
+		t.order_status as orderStatus,
+		to_char(t.order_finish_Time,'yyyyMMdd hh24miss') as orderFinishTime,
+		t.region as region,
+		t.is_use_couple as isUseCouple,
+		t.couple_Code as coupleCode,
+		t.invalid_time as invalidTime
+		from T_SALE_CARD_ORDER t where t.user_id=#{userId} and t.order_status =#{orderStatus} and t.is_invalid='0' and t.card_type=#{cardType}
+	</select>
+	
+	<!-- 根据订单号查询订单详情 -->
+	<select id="qryYTTOrderDetailByOrderId" parameterType="String" resultType="com.xwtec.ecu.web.YTTCard.pojo.YTTCardOrderDetail">
+		select t.order_id as orderId,
+		t.goods_code as goodsCode,
+		t.quantity as quantity,
+		t.price as price,
+		to_char(t.create_time,'yyyyMMdd hh24miss') as createTime,
+		t.order_detail as orderDetail
+		 from T_SALE_CARD_ORDER_DETAIL t 
+	</select>
+	
+	<!--根据卡类型查询该类型的详情 -->
+	<select id="qryYTTCardByCardType" parameterType="String" resultType="com.xwtec.ecu.web.YTTCard.pojo.YTTCard">
+		
+	</select>
+</mapper>

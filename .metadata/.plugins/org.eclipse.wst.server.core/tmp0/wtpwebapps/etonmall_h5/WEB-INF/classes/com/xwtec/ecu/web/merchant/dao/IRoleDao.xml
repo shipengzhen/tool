@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xwtec.ecu.web.merchant.dao.IRoleDao">
+
+	<!-- 根据操作员id获取权限列表 -->
+	<select id="qryOperatorAuthorityList" parameterType="String" resultType="String">
+		SELECT T.CARDID
+      FROM T_ROLE_CARD_RIGHT T
+      JOIN T_OPERATOR_INFO OI ON T.ROLEID = OI.ROLE_ID
+                             AND T.DEL_FLAG = '0'
+     WHERE OI.OPERATOR_ID = #{operatorId}
+     ORDER BY T.SORT
+	</select>
+	
+	<!-- 根据roleId获取role信息-->
+	<select id="qryRoleByRoleId" parameterType="String" resultType="com.xwtec.ecu.web.merchant.bean.RoleInfo">
+		SELECT T.ROLE_ID AS roleId,
+       	T.ROLE_NAME AS roleName,
+       	T.STATUS AS status
+      	FROM T_ROLE_INFO T WHERE T.ROLE_ID=#{roleId} AND T.STATUS = '0'
+	</select>
+	
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xwtec.ecu.web.merchant.dao.IOperatorDao">
+
+	<!-- 根据电话号码获取操作员信息 -->
+	<select id="qryOperatorByTelNum" parameterType="String" resultType="com.xwtec.ecu.web.merchant.bean.OperatorInfo">
+		SELECT T.OPERATOR_ID AS operatorId, 
+			T.OPERATOR_NAME AS operatorName, 
+			T.STORE_ID AS storeId,
+			T.ROLE_ID AS roleId, 
+			T.TELNUM AS telNum,
+			T.MERCHANTID AS merchantId
+		  FROM T_OPERATOR_INFO T
+		 WHERE T.TELNUM = #{telNum} AND T.STATUS = '0'
+	</select>
+	
+	<!-- 获取指定操作员开始结束时间内的收款记录-->
+	<select id="countOperatorReceiptByOperatorIdAndDate" parameterType="java.util.Map" resultType="String">
+		SELECT CASE WHEN TA.MONEY IS NULL THEN 0 ELSE TA.MONEY END FROM (SELECT SUM(T.PRICE) AS MONEY
+    	FROM T_PAYMENT_ORDER T 
+		WHERE T.OPERATOR_ID = #{operatorId}
+		AND T.ORDER_STATUS = '20'
+		AND T.PAY_TIME <![CDATA[>=]]> TO_DATE(#{startTime},'YYYYMMDDHH24MISS')
+		<if test="endTime != null and endTime !=''">
+			AND T.PAY_TIME <![CDATA[<=]]> TO_DATE(#{endTime},'YYYYMMDDHH24MISS')
+		</if>
+   		<if test="endTime == null or endTime == ''">
+   			AND T.PAY_TIME <![CDATA[<=]]> SYSDATE
+   		</if> ) TA
+	</select>
+	
+	<select id="countOperatorReceiptsListByOperatorIdAndDate" parameterType="java.util.Map" resultType="com.xwtec.ecu.web.merchant.bean.ReceiptResult">
+		SELECT SUM(CASE WHEN T.PRICE IS NULL THEN '0' ELSE T.PRICE END) AS amount,
+		A.OPERATOR_NAME AS operatorName,
+        TO_CHAR(T.PAY_TIME, 'YYYYMMDD') AS showName
+	    FROM T_OPERATOR_INFO A 
+	    LEFT JOIN T_PAYMENT_ORDER T ON A.OPERATOR_ID = T.OPERATOR_ID AND A.OPERATOR_ID = #{operatorId}
+	    AND T.PAY_TIME <![CDATA[>=]]> TO_DATE(#{startTime},'YYYYMMDDHH24MISS')
+   		<if test="endTime != null and endTime !=''">
+			AND T.PAY_TIME <![CDATA[<=]]> TO_DATE(#{endTime},'YYYYMMDDHH24MISS')
+		</if>
+   		<if test="endTime == null or endTime == ''">
+   			AND T.PAY_TIME <![CDATA[<=]]> SYSDATE
+   		</if>
+   		WHERE A.STATUS = '0' AND T.ORDER_STATUS = '20'
+      	GROUP BY A.OPERATOR_NAME ,TO_CHAR(T.PAY_TIME, 'YYYYMMDD')
+	</select>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xwtec.ecu.web.merchant.dao.IDateDao">
+
+	<!-- 获取当前日期 -->
+	<select id="getTodayDate" resultType="String">
+		SELECT TO_CHAR(SYSDATE,'YYYYMMDD') FROM DUAL 
+	</select>
+	
+	<!-- 获取昨天日期 -->
+	<select id="getYesterdayDate" resultType="String">
+		SELECT TO_CHAR(SYSDATE-1,'YYYYMMDD') FROM DUAL 
+	</select>
+	
+	<!-- 获取当前月份的第一天 -->
+	<select id="getFirstDayOfMonth" resultType="String">
+		SELECT TO_CHAR(TRUNC(SYSDATE,'MONTH'),'YYYYMMDD') FROM DUAL
+	</select>
+	
+	<!-- 获取当前月份的最后一天 -->
+	<select id="getLastDayOfMonth" resultType="String">
+		SELECT TO_CHAR(LAST_DAY(TRUNC(SYSDATE,'MONTH')),'YYYYMMDD') LAST_DAYOFMONTH 
+		FROM DUAL
+	</select>
+</mapper>

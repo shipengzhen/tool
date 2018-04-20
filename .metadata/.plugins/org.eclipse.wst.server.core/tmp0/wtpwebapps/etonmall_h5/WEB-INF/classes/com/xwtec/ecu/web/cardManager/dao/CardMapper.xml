@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xwtec.ecu.web.cardManager.dao.CardMapper">
+
+	<!-- 查询用户拥有的超级会员卡 -->
+	<select id="qrySuperCardByUserId" parameterType="java.lang.String" resultType="com.xwtec.ecu.web.cardManager.pojo.SuperCard">
+		
+	</select>
+	
+	<!-- 通过卡片类型查询卡片 -->
+	<select id="qryCardByType" parameterType="java.lang.String" resultType="com.xwtec.ecu.web.cardManager.pojo.CardDic">
+		select t.card_type as cardType,
+				t.card_name as cardName,
+				t.logo_url as logoUrl,
+				t.small_logo_url as smallLogoUrl,
+				t.create_time as createTime,
+				t.CARD_DETAIL as cardDetail,
+				t.APPLI_MERCHANT as appliMerchant,
+				t.CARD_FIELD as cardFiled,
+				t.is_used as isUsed,
+				t.attention as attention
+		 from T_CARD_LIST_INFO t 
+		 	where t.card_type=#{cardType}
+	</select>
+	
+	<!-- 查询可用卡片 -->
+	<select id="qryCardCenter" resultType="com.xwtec.ecu.web.cardManager.pojo.CardDic">
+		select t.card_type as cardType,
+				t.card_name as cardName,
+				t.logo_url as logoUrl,
+				t.small_logo_url as smallLogoUrl,
+				t.create_time as createTime,
+				t.CARD_DETAIL as cardDetail,
+				t.APPLI_MERCHANT as appliMerchant,
+				t.CARD_FIELD as cardFiled,
+				t.is_used as isUsed,
+				t.attention as attention
+		 from T_CARD_LIST_INFO t 
+		 	where t.is_used='0'
+	</select>
+
+	<select id="qryActCard" resultType="com.xwtec.ecu.web.cardManager.pojo.CardDic">
+		select t.CARD_NAME as cardName,
+       	t.CARD_TYPE as cardType,
+       	t.PRICE     as cardBalance T_ACT_CARD_INFO t
+		 where t.IS_USED = '0'
+	</select>
+</mapper>

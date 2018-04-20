@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xwtec.ecu.web.merchant.dao.IStoreDao">
+
+	<!-- 根据店铺id获取店铺信息-->
+	<select id="qryStoreInfoByStoreId" parameterType="String" resultType="com.xwtec.ecu.web.merchant.bean.StoreInfo">
+		SELECT T.STORE_ID AS storeId,
+		       T.STORE_NAME AS storeName,
+		       T.MERCHANT_ID AS merchantId,
+		       T.POSI_X AS posiX,
+		       T.POSI_Y AS posiY,
+		       T.ADDRESS AS address,
+		       T.CONTRACT_PHONE AS contractPhone,
+		       T.PROVINCE_CODE AS provinceCode,
+		       T.CITY_CODE AS cityCode,
+		       T.AREA_CODE AS areaCode,
+		       T.AUDITING_STATE AS auditingState,
+		       T.STATUS AS status,
+		       T.BUSSINESS_CIRCLE_ID AS bussinessCircleId,
+		       T.BUSSINESS_HOURS AS bussinessHours,
+		       T.STORE_NOTICE AS storeNotice,
+		       T.POS_ID AS posId,
+		       T.THUMBNAIL AS thumbnail
+		FROM T_STORE_INFO T
+		WHERE T.STATUS = '0'
+		AND T.STORE_ID = #{storeId}
+	</select>
+	
+	<!-- 计算门店下的所有操作员数量 -->
+	<select id="countStoreOperatorByStoreId" parameterType="String" resultType="String">
+		SELECT COUNT(*)
+		FROM T_OPERATOR_INFO T
+		WHERE T.STORE_ID = #{storeId}
+		AND T.STATUS = '0'
+	</select>
+	
+	<!-- 根据门店Id和日期计算店铺收款记录 -->
+	<select id="countStoreReceiptsByStoreIdAndDate" parameterType="java.util.Map" resultType="String">
+		SELECT CASE WHEN TA.MONEY IS NULL THEN 0 ELSE TA.MONEY END  FROM (SELECT SUM(T.PRICE) AS MONEY
+		FROM T_PAYMENT_ORDER T 
+		WHERE T.STORE_ID = #{storeId}
+		AND ORDER_STATUS = '20'
+    	AND T.PAY_TIME <![CDATA[>=]]> TO_DATE(#{startTime},'YYYYMMDDHH24MISS')
+        <if test="endTime != null and endTime !=''">
+			AND T.PAY_TIME <![CDATA[<=]]> TO_DATE(#{endTime},'YYYYMMDDHH24MISS')
+		</if>
+   		<if test="endTime == null or endTime ==''">
+   			AND T.PAY_TIME <![CDATA[<=]]> SYSDATE
+   		</if> ) TA
+	</select>
+	
+	<!-- 根据storeId获取商铺返回数据类 -->
+	<select id="qryStoreResultInfoByStoreId" parameterType="String" resultType="com.xwtec.ecu.web.merchant.bean.StoreResult">
+		SELECT T.STORE_ID AS storeId,
+		   T.STORE_NAME AS storeName,
+	       T.ADDRESS AS address,
+	       T.CONTRACT_PHONE AS contractPhone,
+	       A.NAME AS bussinessCircleName,
+	       T.BUSSINESS_HOURS AS bussinessHours,
+	       T.POSI_X AS posiX,
+		   T.POSI_Y AS posiY,
+       	   M.LOGO AS merchantLogo,
+	       T.STORE_NOTICE AS storeNotice
+     	 FROM T_STORE_INFO T  LEFT JOIN SYS_AREA A ON T.BUSSINESS_CIRCLE_ID = A.CODE 
+    	  LEFT JOIN T_MERCHANT_INFO M ON T.MERCHANT_ID = M.MERCHANT_ID
+    	  WHERE T.STORE_ID = #{storeId}
+	</select>
+	
+	<!-- 根据查询条件查询店铺返回列表 -->
+	<select id="qryStoreResultInfoList" parameterType="java.util.Map" resultType="com.xwtec.ecu.web.merchant.bean.StoreResult">
+		SELECT T.STORE_ID AS storeId,
+		 T.STORE_NAME AS storeName,
+         T.ADDRESS AS address,
+         T.CONTRACT_PHONE AS contractPhone,
+         A.NAME AS bussinessCircleName,
+         T.BUSSINESS_HOURS AS bussinessHours,
+         T.POSI_X AS posiX,
+		 T.POSI_Y AS posiY,
+		 M.LOGO AS merchantLogo,
+         T.STORE_NOTICE AS storeNotice
+		 FROM T_STORE_INFO T
+		 LEFT JOIN T_MERCHANT_INFO M ON T.MERCHANT_ID = M.MERCHANT_ID 
+		 LEFT JOIN SYS_AREA A ON T.BUSSINESS_CIRCLE_ID = A.CODE
+		 WHERE 
+		 T.STATUS = '0'
+		 AND T.AUDITING_STATE = '10'
+		 <if test="cityCode != null and cityCode != ''">
+		 	AND T.CITY_CODE = #{cityCode}
+		 </if>
+		 <if test="areaCode != null and areaCode != ''">
+		 	AND T.AREA_CODE = #{areaCode}
+		 </if>
+		 <if test="type != null and type != ''">
+		 	AND M.TYPE = #{type}
+		 </if>
+		 <if test="detailType != null and detailType != ''">
+		 	AND M.DETAIL_TYPE = #{detailType}
+		 </if>
+	</select>
+	
+	<!-- 获取门店的图片 -->
+	<select id="qryStoreImages" parameterType="String" resultType="String">
+		SELECT T.IMAGE_URL
+		FROM T_STORE_IMAGES T
+		WHERE T.STATUS = '0'
+		AND T.STORE_ID = #{storeId}
+	</select>
+	
+	<select id="qryStoreOperatorIdListByStoreId" parameterType="String" resultType="com.xwtec.ecu.web.merchant.bean.CodeNameResult">
+		SELECT T.OPERATOR_ID AS code,
+		T.OPERATOR_NAME AS name
+		FROM T_OPERATOR_INFO T
+		WHERE T.STORE_ID = #{storeId}
+		AND T.STATUS = '0'
+	</select>
+	
+	<select id="qryAllStoreList" resultType="com.xwtec.ecu.web.merchant.bean.StoreInfo">
+		SELECT T.STORE_ID AS storeId,
+		       T.STORE_NAME AS storeName,
+		       T.MERCHANT_ID AS merchantId,
+		       T.POSI_X AS posiX,
+		       T.POSI_Y AS posiY,
+		       T.ADDRESS AS address,
+		       T.CONTRACT_PHONE AS contractPhone,
+		       T.PROVINCE_CODE AS provinceCode,
+		       T.CITY_CODE AS cityCode,
+		       T.AREA_CODE AS areaCode,
+		       T.AUDITING_STATE AS auditingState,
+		       T.STATUS AS status,
+		       T.BUSSINESS_CIRCLE_ID AS bussinessCircleId,
+		       T.BUSSINESS_HOURS AS bussinessHours,
+		       T.STORE_NOTICE AS storeNotice,
+		       T.POS_ID AS posId,
+		       T.THUMBNAIL AS thumbnail
+		FROM T_STORE_INFO T
+		WHERE T.STATUS = '0'
+		AND T.AUDITING_STATE = '10'
+	</select>
+</mapper>

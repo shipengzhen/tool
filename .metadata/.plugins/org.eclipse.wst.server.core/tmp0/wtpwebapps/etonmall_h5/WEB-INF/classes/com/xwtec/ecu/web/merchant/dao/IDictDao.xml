@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xwtec.ecu.web.merchant.dao.IDictDao">
+
+	<!-- 根据分组号获取配置项信息 -->
+	<select id="qryDictInfoListByGroupId" parameterType="String" resultType="com.xwtec.ecu.web.merchant.bean.DictInfo">
+		SELECT T.ID AS id,
+		       T.GROUP_ID AS groupId,
+		       T.DICT_VALUE AS dictValue,
+		       T.DICT_NAME AS dictName,
+		       T.DICT_DESC AS dictDesc,
+		       T.PARENT_ID AS parentId,
+		       T.IS_ALL AS isAll
+		FROM T_DATA_DICT T 
+		WHERE T.GROUP_ID = #{groupId}
+		ORDER BY T.SORT
+	</select>
+	
+	<!-- 根据分组和父ID获取配置项信息 -->
+	<select id="qryDictInfoListByGroupIdAndParentId" parameterType="String" resultType="com.xwtec.ecu.web.merchant.bean.DictInfo">
+		SELECT T.ID AS id,
+		       T.GROUP_ID AS groupId,
+		       T.DICT_VALUE AS dictValue,
+		       T.DICT_NAME AS dictName,
+		       T.DICT_DESC AS dictDesc,
+		       T.PARENT_ID AS parentId,
+		       T.IS_ALL AS isAll
+		FROM T_DATA_DICT T 
+		WHERE T.GROUP_ID = #{groupId} and T.PARENT_ID = #{parentId}
+		ORDER BY T.SORT
+	</select>
+	
+	<!-- 根据dictId获取dict信息 -->
+	<select id="qryDictInfoByDictId" parameterType="String" resultType="com.xwtec.ecu.web.merchant.bean.DictInfo">
+		SELECT T.ID AS id,
+		       T.GROUP_ID AS groupId,
+		       T.DICT_VALUE AS dictValue,
+		       T.DICT_NAME AS dictName,
+		       T.DICT_DESC AS dictDesc,
+		       T.PARENT_ID AS parentId,
+		       T.IS_ALL AS isAll
+		FROM T_DATA_DICT T 
+		WHERE T.ID = #{dictId}
+	</select>
+	
+	<select id="qrySameLevelDictCodeAndName" parameterType="String" resultType="com.xwtec.ecu.web.merchant.bean.CodeNameResult">
+		SELECT T.DICT_VALUE AS code,
+		       T.DICT_NAME AS name 
+		FROM T_DATA_DICT T
+		LEFT JOIN T_DATA_DICT B ON T.PARENT_ID = B.PARENT_ID
+		WHERE B.ID = #{dictId}
+		ORDER BY T.SORT
+	</select>
+	
+	<select id="qryChildrenDictCodeAndName" parameterType="String" resultType="com.xwtec.ecu.web.merchant.bean.CodeNameResult">
+		SELECT T.DICT_VALUE AS code,
+		       T.DICT_NAME AS name 
+		FROM T_DATA_DICT T
+		LEFT JOIN T_DATA_DICT B ON T.PARENT_ID = B.ID
+		WHERE B.ID = #{dictId}
+		ORDER BY T.SORT
+	</select>
+</mapper>
