@@ -7,12 +7,12 @@ import java.util.List;
 
 /**
  * 
- * @author Ê©ÅôÕñ
+ * @author æ–½é¹æŒ¯
  *
  */
 public class DaoHelper {
 	
-	//µ÷È¡Ä³¸ö·½·¨
+	//è°ƒå–æŸä¸ªæ–¹æ³•
 	public void getHelper(Class<?> class1,String methodName,Object[] objects) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		
 		Class<?>[] classes=null;

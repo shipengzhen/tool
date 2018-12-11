@@ -6,15 +6,15 @@ import java.io.InputStreamReader;
 import java.util.Properties;
 
 /**
- * ¶ÁÈ¡ÅäÖÃÎÄ¼şµÄ¹¤¾ßÀà-µ¥ÀıÄ£Ê½
- * @author Ê©ÅôÕñ
+ * è¯»å–é…ç½®æ–‡ä»¶çš„å·¥å…·ç±»-å•ä¾‹æ¨¡å¼
+ * @author æ–½é¹æŒ¯
  *
  */
 public class ConfigManager {
 
 	private static Properties properties;
 
-	//ÅäÖÃÎÄ¼şÂ·¾¶
+	//é…ç½®æ–‡ä»¶è·¯å¾„
 	private static String configFile = "database.properties";
 
 	public static ConfigManager getInstance() {
@@ -30,12 +30,12 @@ public class ConfigManager {
 		static ConfigManager configManager = new ConfigManager();
 	}
 	
-	// Ë½ÓĞ¹¹ÔìÆ÷-¶ÁÈ¡Êı¾İ¿âÅäÖÃÎÄ¼ş
+	// ç§æœ‰æ„é€ å™¨-è¯»å–æ•°æ®åº“é…ç½®æ–‡ä»¶
 	private ConfigManager() {
 		try {
 			properties = new Properties();
 			InputStream is = ConfigManager.class.getClassLoader().getResourceAsStream(configFile);
-			//½â¾öÖĞÎÄÂÒÂë
+			//è§£å†³ä¸­æ–‡ä¹±ç 
 			InputStreamReader isReader=new InputStreamReader(is, "utf-8");
 			properties.load(isReader);
 			is.close();
@@ -47,7 +47,7 @@ public class ConfigManager {
 	}
 
 	/**
-	 * ´«Èëkey»ñÈ¡Öµ
+	 * ä¼ å…¥keyè·å–å€¼
 	 * 
 	 * @param key
 	 * @return

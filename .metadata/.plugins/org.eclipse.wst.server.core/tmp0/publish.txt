@@ -1,3 +1,0 @@
-#Tomcat publish data
-#Tue Apr 17 17:20:49 CST 2018
-org.eclipse.jst.jee.server\:/binary\:C\:\\Users\\xiaomi\\.m2\\repository\\org\\springframework\\spring-web\\3.2.3.RELEASE\\spring-web-3.2.3.RELEASE.jar=WEB-INF/lib/spring-web-3.2.3.RELEASE.jar

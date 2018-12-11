@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+<!-- 
+      desc: sping ico transaction
+      template version: 1.0
+      author:  zyf
+      date  :  2010-01-20
+ -->
+	
+	<bean id="SessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+					<value>com/oa/dao/Dept.hbm.xml</value>
+			<value>com/oa/dao/Emp.hbm.xml</value>
+			<value>com/oa/dao/Pro.hbm.xml</value>
+			<value>com/oa/dao/ProEmp.hbm.xml</value>
+			<value>com/oa/dao/SysEmployee.hbm.xml</value>
+			<value>com/oa/dao/SysPosition.hbm.xml</value>
+			<value>com/oa/dao/SysDepartment.hbm.xml</value>
+			<value>com/oa/dao/BizClaimVoucher.hbm.xml</value>
+			<value>com/oa/dao/BizCheckResult.hbm.xml</value>
+			<value>com/oa/dao/BizCvDetailly.hbm.xml</value>
+			<value>com/oa/dao/SysLeave.hbm.xml</value>
+			<value>com/oa/dao/SysLeaveResult.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+</beans>

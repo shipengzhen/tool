@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * 
- * @author Ê©ÅôÕñ
+ * @author æ–½é¹æŒ¯
  *
  */
 public class Database extends GeneratorEntity {
@@ -18,7 +18,7 @@ public class Database extends GeneratorEntity {
 				this.tableName=tableName.toString();
 				getEntity();
 			}
-			System.out.println("Éú³É³É¹¦");
+			System.out.println("ç”ŸæˆæˆåŠŸ");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

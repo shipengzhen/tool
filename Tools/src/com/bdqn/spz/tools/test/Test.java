@@ -29,14 +29,14 @@ public class Test {
 		DaoHelper daoHelper = new DaoHelper();
 		daoHelper.getHelper(Test.class, "hh", new Object[] { 1, 1 });
 
-		// ¶¯Ì¬¹¹ÔìInvokeTestÀàµÄÊµÀı
+		// åŠ¨æ€æ„é€ InvokeTestç±»çš„å®ä¾‹
 		// Class<?> classType = Test.class;
 		// Object invokeTest = classType.newInstance();
 		//
-		// //¶¯Ì¬¹¹ÔìInvokeTestÀàµÄadd(int num1, int num2)·½·¨£¬±ê¼ÇÎªaddMethodµÄMethod¶ÔÏó
+		// //åŠ¨æ€æ„é€ InvokeTestç±»çš„add(int num1, int num2)æ–¹æ³•ï¼Œæ ‡è®°ä¸ºaddMethodçš„Methodå¯¹è±¡
 		// Method addMethod = classType.getMethod("hh", new Class[]{int.class});
 		// System.out.println(addMethod);
-		// //¶¯Ì¬¹¹ÔìµÄMethod¶ÔÏóinvokeÎ¯ÍĞ¶¯Ì¬¹¹ÔìµÄInvokeTest¶ÔÏó£¬Ö´ĞĞ¶ÔÓ¦ĞÎ²ÎµÄadd·½·¨
+		// //åŠ¨æ€æ„é€ çš„Methodå¯¹è±¡invokeå§”æ‰˜åŠ¨æ€æ„é€ çš„InvokeTestå¯¹è±¡ï¼Œæ‰§è¡Œå¯¹åº”å½¢å‚çš„addæ–¹æ³•
 		// Object result = addMethod.invoke(invokeTest, new Object[]{1});
 	}
 
@@ -46,20 +46,20 @@ public class Test {
 	}
 
 	/**
-	 * <h1>Éú³ÉinsertÓï¾ä£¬¸ù¾İModel¶ÔÏó£¬Ö¸¶¨±íÃû£¬Ö¸¶¨Ó³Éä</h1><br/>
-	 * ÀıÈç£ºsqlInsert(user,null,map)<br/>
+	 * <h1>ç”Ÿæˆinsertè¯­å¥ï¼Œæ ¹æ®Modelå¯¹è±¡ï¼ŒæŒ‡å®šè¡¨åï¼ŒæŒ‡å®šæ˜ å°„</h1><br/>
+	 * ä¾‹å¦‚ï¼šsqlInsert(user,null,map)<br/>
 	 * <br/>
-	 * Äã¿ÉÒÔÓÃmap×ö×Ô¶¨Òå¸ß¼¶¿ØÖÆ<br>
-	 * map.put("drop","sa");½«´ú±í¶ªÆúsaÊôĞÔ²»×öÓ³Éä<br>
-	 * map.put("sex","default");½«´ú±ísex×Ö¶ÎÓÃdefault<br>
-	 * map.put("columnName","propName");½â¾öÁĞÃûºÍÊôĞÔÃû²»Ò»ÖÂµÄÇé¿ö
+	 * ä½ å¯ä»¥ç”¨mapåšè‡ªå®šä¹‰é«˜çº§æ§åˆ¶<br>
+	 * map.put("drop","sa");å°†ä»£è¡¨ä¸¢å¼ƒsaå±æ€§ä¸åšæ˜ å°„<br>
+	 * map.put("sex","default");å°†ä»£è¡¨sexå­—æ®µç”¨default<br>
+	 * map.put("columnName","propName");è§£å†³åˆ—åå’Œå±æ€§åä¸ä¸€è‡´çš„æƒ…å†µ
 	 * 
 	 * @param obj
-	 *            ÒªÓ³ÉäµÄ¶ÔÏó
+	 *            è¦æ˜ å°„çš„å¯¹è±¡
 	 * @param tableName
-	 *            ±íÃû£¬Ìînull½«ÓÃobjµÄÀàÃû
+	 *            è¡¨åï¼Œå¡«nullå°†ç”¨objçš„ç±»å
 	 * @param map
-	 *            ×ö×Ô¶¨Òå¸ß¼¶¿ØÖÆ
+	 *            åšè‡ªå®šä¹‰é«˜çº§æ§åˆ¶
 	 * @return
 	 */
 	public String sqlInsert(Object obj, String tableName, Map<String, String> map) {
@@ -72,7 +72,7 @@ public class Test {
 		StringBuilder sbk = new StringBuilder();// set...
 		StringBuilder sbv = new StringBuilder();// where...
 
-		Field[] fs = c.getDeclaredFields();// »ñµÃÊôĞÔÊı×é
+		Field[] fs = c.getDeclaredFields();// è·å¾—å±æ€§æ•°ç»„
 		for (Field f : fs) {
 			String propName = f.getName();
 			if (map.containsValue(propName) == false) {
@@ -88,7 +88,7 @@ public class Test {
 			}
 		}
 
-		// ±éÀúmap£¬drop¡¢×Ô¶¨ÒåÓ³Éä
+		// éå†mapï¼Œdropã€è‡ªå®šä¹‰æ˜ å°„
 		for (String k : map.keySet()) {
 			try {
 				if (k.indexOf("drop") == 0) {

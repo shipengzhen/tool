@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+<!-- 
+      desc: config dao Bean
+      template version: 1.0
+      author:  zyf
+      date  :2010-01-20
+ -->
+	<bean id="DeptDao" class="com.oa.dao.impl.DeptDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="SessionFactory" />
+		</property>
+	</bean>
+	<bean id="EmpDao" class="com.oa.dao.impl.EmpDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="SessionFactory" />
+		</property>
+	</bean>
+	<bean id="ProDao" class="com.oa.dao.impl.ProDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="SessionFactory" />
+		</property>
+	</bean>
+	<bean id="ProEmpDao" class="com.oa.dao.impl.ProEmpDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="SessionFactory" />
+		</property>
+	</bean>
+	<bean id="SysEmployeeDao" class="com.oa.dao.impl.SysEmployeeDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="SessionFactory" />
+		</property>
+	</bean>
+	<bean id="SysPositionDao" class="com.oa.dao.impl.SysPositionDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="SessionFactory" />
+		</property>
+	</bean>
+	<bean id="SysDepartmentDao" class="com.oa.dao.impl.SysDepartmentDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="SessionFactory" />
+		</property>
+	</bean>
+	<bean id="BizClaimVoucherDao" class="com.oa.dao.impl.BizClaimVoucherDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="SessionFactory" />
+		</property>
+	</bean>
+	<bean id="BizCheckResultDao" class="com.oa.dao.impl.BizCheckResultDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="SessionFactory" />
+		</property>
+	</bean>
+	<bean id="BizCvDetaillyDao" class="com.oa.dao.impl.BizCvDetaillyDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="SessionFactory" />
+		</property>
+	</bean>
+	<bean id="SysLeaveDao" class="com.oa.dao.impl.SysLeaveDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="SessionFactory" />
+		</property>
+	</bean>
+	<bean id="SysLeaveResultDao" class="com.oa.dao.impl.SysLeaveResultDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="SessionFactory" />
+		</property>
+	</bean>
+</beans>

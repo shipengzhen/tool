@@ -2,17 +2,17 @@ package com.bdqn.spz.tools.dao;
 
 import java.util.List;
 /**
- * ·ÖÒ³¹¤¾ßÀà  Ê¹ÓÃ·¶ÐÍ¼¯ºÏ
- * @author °üÐ¡¶°
+ * ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  Ê¹ï¿½Ã·ï¿½ï¿½Í¼ï¿½ï¿½ï¿½
+ * @author ï¿½ï¿½Ð¡ï¿½ï¿½
  *
  */
 public class PageSupport<T> {
-	private Integer pageNo;  //µ±Ç°Ò³
-	private Integer pageSize; //Ò³´óÐ¡
-	private Integer maxPage;  //×î´óÒ³
-	private Integer countToal;//×ÜÊýÁ¿
-	private List<T>list;  	//Õ¹Ê¾¼¯ºÏ
-	//ÎÞ²Î¹¹Ôì
+	private Integer pageNo;  //ï¿½ï¿½Ç°Ò³
+	private Integer pageSize; //Ò³ï¿½ï¿½Ð¡
+	private Integer maxPage;  //ï¿½ï¿½ï¿½Ò³
+	private Integer countToal;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private List<T>list;  	//Õ¹Ê¾ï¿½ï¿½ï¿½ï¿½
+	//ï¿½Þ²Î¹ï¿½ï¿½ï¿½
 	public PageSupport() {
 		super();
 	}

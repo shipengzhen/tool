@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Config>
+<PROJECT>
+    <name>oa</name>
+    <vooutpath>F:\Learning\Java\SSH\autoHibernateDao\src\main\java\com\oa\dao</vooutpath>
+    <packagepath>com.oa.dao</packagepath>
+    <configfilepath>F:\Learning\Java\SSH\autoHibernateDao\src</configfilepath>
+</PROJECT>
+
+<DB>
+    <!-- 下面这个default_key 是默认所有表的主键生成算法,默认uuid.hex可以由用户自己定义 ,
+           如果有个别表不想按照默认的算法生成主键 例如users表想native作为主键算法,则只需要在
+           下面pk_set里面填上：表名(小写)/主键生成算法 就可以了，例如 users/hative 如果有
+           多个表则用","逗号分隔开来.
+     -->
+    <default_key>uuid.hex</default_key>
+    <pk_set></pk_set>
+    
+    <!-- 
+        db_type     :数据库类型oracle // mysql 支持两种数据库
+        db_classname:驱动程序名称
+        db_conn     :数据库连接的url
+        db_user     :数据库用户名
+        db_passwd   :数据库密码
+        db_database :数据库名称
+         下面是范例
+    -->
+    <!--
+    <db_type>mysql</db_type>
+    <db_classname>com.mysql.jdbc.Driver</db_classname>
+    <db_conn>jdbc:mysql://localhost:3306/netbook</db_conn>
+    <db_user>root</db_user>
+    <db_passwd>login</db_passwd>
+    <db_database>netbook</db_database>
+    -->
+
+     <db_type>oracle</db_type>
+	 <db_classname>oracle.jdbc.driver.OracleDriver</db_classname>
+	 <db_conn>jdbc:oracle:thin:@127.0.0.1:1521:orcl</db_conn>
+	 <db_user>scott</db_user>
+	 <db_passwd>scott</db_passwd>
+	 <db_database>orcl</db_database>
+
+</DB>
+</Config>
