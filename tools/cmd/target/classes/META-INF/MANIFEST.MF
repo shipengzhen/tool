@@ -3,7 +3,7 @@ Implementation-Title: cmd
 Implementation-Version: 0.0.1-SNAPSHOT
 Built-By: 施鹏振
 Implementation-Vendor-Id: com.spz.tools
-Build-Jdk: 1.8.0_192
+Build-Jdk: 1.8.0_112
 Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
  ot-starter-parent/tools/cmd
 Created-By: Maven Integration for Eclipse
