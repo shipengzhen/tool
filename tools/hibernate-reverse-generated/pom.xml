@@ -34,16 +34,19 @@
 				<version>2.2</version>
 				<configuration>
 					<components>
+						<!-- mvn hibernate3:hbm2hbmxml -->
 						<component>
 							<name>hbm2hbmxml</name>
 							<implementation>jdbcconfiguration</implementation>
 							<outputDirectory>src/main/java</outputDirectory>
 						</component>
+						<!-- mvn hibernate3:hbm2java -->
 						<component>
 							<name>hbm2java</name>
 							<implementation>jdbcconfiguration</implementation>
 							<outputDirectory>src/main/java</outputDirectory>
 						</component>
+						<!-- mvn hibernate3:hbm2dao -->
 						<component>
 							<name>hbm2dao</name>
 							<implementation>jdbcconfiguration</implementation>
